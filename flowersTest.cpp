@@ -2,6 +2,7 @@
 #include "flowers.h"
 #include <iomanip>
 
+
 using namespace std;
 
 
@@ -18,17 +19,20 @@ int main() {
 	for (unsigned int ada = 0; ada < 18; ++ada) {
         cout << spitEulerSquare(ada) << " ";
     }cout << endl;
-    
-    
-    // test angles
     ContinuedFraction sqrt2;
     sqrt2.fixedPart = {1};
     sqrt2.periodicPart = {2};
-    cout << "Square root of 2: " << endl;
-    printCF(sqrt2, 10);
     
-    cout << "Square root 2 approximated with first 5 ints in the cont.fra.: ";    auto apx = getApproximation(sqrt2, 5);
-    cout << apx.denominator << " " << apx.numerator << endl;
+    ContinuedFraction test;
+    test.fixedPart = {2,1,2,3};
+    test.periodicPart={};
+   
+    cout << "Square root of 2: " << endl;
+    printCF(test, 10);
+    
+    cout << "Square root 2 approximated with first 5 ints in the cont.fra.: ";
+    auto apx = getApproximation(test, 5);
+    cout << apx.numerator << "/" << apx.denominator << endl;
     
     cout << "Angle after 3 cycles of sqrt{2} rotations: ";
 	auto angleThreeTimesSqrt2 = getAngle(sqrt2, 3);
