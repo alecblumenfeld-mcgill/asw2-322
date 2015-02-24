@@ -4,12 +4,27 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
     Fraction toRet; // will be returned
     std::vector<int> temp;
     //make a new vector list for the length of n
-    for (std::vector<int>::iterator it = fr.fixedPart.begin() ; it != fr.fixedPart.end(); ++it){
-        temp.push_back(*it);
-        n--;
-        if (n<1) {
-            break;
-            
+    if (fr.fixedPart[0]==0) {
+        std::vector<int>::iterator it = fr.periodicPart.begin();
+        while (n>1) {
+            temp.push_back(*it);
+            n--;
+            if (it == fr.periodicPart.end() ) {
+                it = fr.periodicPart.begin() ;
+            }
+        }
+        
+
+    }
+    else if (fr.fixedPart.size()!=0) {
+
+        for (std::vector<int>::iterator it = fr.fixedPart.begin() ; it != fr.fixedPart.end(); ++it){
+            temp.push_back(*it);
+            n--;
+            if (n<1) {
+                break;
+                
+            }
         }
     }
     //recurse though periodic part for new list
@@ -24,18 +39,20 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
             }
         }
     }
+ 
     toRet.numerator=1;
     toRet.denominator=temp.back();
     temp.pop_back();
     temp.pop_back();
-
-    for (std::vector<int>::iterator it = temp.end() ; it != temp.begin(); --it){
+    for (std::vector<int>::iterator it = temp.end()+1 ; it != temp.begin(); --it){
         int num = ((*it)*toRet.denominator);
 
         toRet.numerator+=num;
         num=toRet.numerator;
         toRet.numerator = toRet.denominator;
         toRet.denominator= num;
+        //std::cout << toRet.denominator << " " << toRet.numerator << std::endl;
+
         
     }
     int num = temp[0]*toRet.denominator;
@@ -47,7 +64,6 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
 ContinuedFraction ignoreInt(ContinuedFraction input){
     if (input.fixedPart.size()>0) {
         input.fixedPart[0] = 0;
-        
     }
     return input;
 }
@@ -78,27 +94,20 @@ unsigned int spitEulerSquare(unsigned int index) {
 
 
 double getAngle(ContinuedFraction &theta, int k) {
-    ContinuedFraction angle = ignoreInt(theta);
     Fraction angleApprox = getApproximation(theta, 7);
-    double angleApproxDeci= angleApprox.numerator/angleApprox.denominator;
-    
-    
-    double x = angleApproxDeci * (2*M_PI);
-    
-    
-    x = x*k;
-    std::cout<<x<<std::endl;
-    
-    
-    return x;
+    double angleApproxDeci= k*((double)angleApprox.numerator/(double)angleApprox.denominator);
+    double blank;
+    angleApproxDeci = modf(angleApproxDeci, &blank);
+    return  angleApproxDeci * (2*M_PI);
 }
 
 Seed getSeed(ContinuedFraction &theta, int k) {
     Seed toRet;
-    Fraction angleApprox = getApproximation(theta, 7);
-    double angleApproxDeci= angleApprox.numerator/angleApprox.denominator;
-    toRet.x= (sqrt(k/M_PI))*cos((2*M_PI)*(k*angleApproxDeci));
-    toRet.y= (sqrt(k/M_PI))*sin((2*M_PI)*(k*angleApproxDeci));
+    
+    double angle = getAngle(theta, k);
+    
+    toRet.x= sqrt(k/M_PI)*cos(angle);
+    toRet.y= sqrt(k/M_PI)*sin(angle);
     return toRet;
 }
 
