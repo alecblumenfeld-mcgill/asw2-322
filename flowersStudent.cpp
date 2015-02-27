@@ -4,7 +4,10 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
     Fraction toRet; // will be returned
     std::vector<int> temp;
     //make a new vector list for the length of n
-    if (fr.fixedPart[0]==0) {
+    if (fr.fixedPart.size()!=0) {
+        
+  
+    if (fr.fixedPart.front()==0) {
         std::vector<int>::iterator it = fr.periodicPart.begin();
         while (n>1) {
             temp.push_back(*it);
@@ -16,6 +19,7 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
         
 
     }
+          }
     else if (fr.fixedPart.size()!=0) {
 
         for (std::vector<int>::iterator it = fr.fixedPart.begin() ; it != fr.fixedPart.end(); ++it){
@@ -116,13 +120,108 @@ void pushSeed(std::list<Seed> &flower, ContinuedFraction &theta) {
 }
 
 int spitNextMagicBox(MagicBox &box) {
-    // TODO : add code here
-    int x ;
-    return x;
+    if((box.k == 0 && box.l ==0 ) || box.boxedFraction.fixedPart.size() == 0){
+        return -1;
+        
+    }
+    double blank;
+    double joverl;
+    double ioverk;
+    try {
+         joverl= modf((double)box.j / (double)box.l, &blank);
+         ioverk= modf((double)box.i / (double)box.k, &blank);
+    } catch (int e) {
+        
+    }
+    if(joverl != ioverk || box.k ==0  || box.l ==0 ){
+     
+        int p=box.boxedFraction.fixedPart.back();
+        box.boxedFraction.fixedPart.pop_back();
+        
+        int i =box.i;
+        box.i=box.j;
+        int k =box.k;
+        box.k=box.l;
+        box.j = i+ (box.j*p);
+        
+        box.l = k+ (box.l*p);
+        return p;
+    }
+    
+    if(joverl != ioverk){
+        int p=box.boxedFraction.fixedPart.back();
+        box.boxedFraction.fixedPart.pop_back();
+        int i =box.i;
+        box.i=box.j;
+        int k =box.k;
+        box.k=box.l;
+        box.j = i+ (box.j*p);
+        box.l = k+ (box.l*p);
+        return p;
+    }
+    return -1;
+   
 }
 
+
 ContinuedFraction getCFUsingMB(ContinuedFraction &f, int a, int b, int length) {
-    // TODO : add code here
-    ContinuedFraction x;
-    return x;
+    std::vector<int> temp;
+    int n = length;
+    //make a new vector list for the length of n
+    if (f.fixedPart[0]==0) {
+        std::vector<int>::iterator it = f.periodicPart.begin();
+        while (n>1) {
+            temp.push_back(*it);
+            n--;
+            if (it == f.periodicPart.end() ) {
+                it = f.periodicPart.begin() ;
+            }
+        }
+        
+        
+    }
+    else if (f.fixedPart.size()!=0) {
+        
+        for (std::vector<int>::iterator it = f.fixedPart.begin() ; it != f.fixedPart.end(); ++it){
+            temp.push_back(*it);
+            n--;
+            if (n<1) {
+                break;
+                
+            }
+        }
+    }
+    //recurse though periodic part for new list
+    if (f.periodicPart.size()!=0) {
+        
+        std::vector<int>::iterator it = f.periodicPart.begin();
+        while (n>1) {
+            temp.push_back(*it);
+            n--;
+            if (it == f.periodicPart.end() ) {
+                it = f.periodicPart.begin() ;
+            }
+        }
+    }
+   
+    
+    MagicBox *box = new MagicBox;
+    box->i=a;
+    box->j=b;
+    box->boxedFraction.fixedPart = temp;
+    
+    ContinuedFraction toRet = *new ContinuedFraction;
+    int flag =   spitNextMagicBox(*box);
+    while ( flag != -1) {
+        toRet.fixedPart.push_back(flag);
+      
+        flag = spitNextMagicBox(*box);
+        
+        
+
+    }
+    
+    
+    
+    return toRet;
 }

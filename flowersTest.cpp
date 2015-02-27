@@ -15,13 +15,29 @@ ContinuedFraction ignoreInt(ContinuedFraction);
 
 
 int main() {
-    // test Euler square
+    /*/ test Euler square
     cout << "Integers in the sequence of e^2: " << endl;
     for (unsigned int ada = 0; ada < 18; ++ada) {
         cout << spitEulerSquare(ada) << " ";
-    }cout << endl;
+    }cout << endl;*/
+   
+    ContinuedFraction realTest;
+    realTest.periodicPart = {1};
+    
+    for (int i = 0; i < realTest.fixedPart.size(); i++) {
+        std::cout << realTest.fixedPart.at(i) << " ";
+    }
+    for (int i = 0; i < realTest.periodicPart.size(); i++) {
+        std::cout << realTest.periodicPart.at(i) << " ";
+    }
+    std::cout << std::endl;
+    Fraction testy = getApproximation(realTest, 12);
+    std::cout << testy.numerator << " divided by " << testy.denominator << std::endl;
     
     
+    
+    
+   
     // test angles
     ContinuedFraction sqrt2;
     sqrt2.fixedPart = {1};
@@ -59,10 +75,12 @@ int main() {
     
     // test Magic Box
     auto thrithyOverThirteen = getCF(30, 13);
+    printCF(thrithyOverThirteen, 7);
     auto one25OverThirteen = getCFUsingMB(thrithyOverThirteen, 5, 2, 15);
     auto one25OverThirteen2 = getCF(125,13);
     cout << "125/13 as a continued fraction: ";
     printCF(one25OverThirteen, 20);
+    cout<<' ' <<endl;
     cout << "125/13 using the magic box as 5 + 2 * 30/13: ";
     printCF(one25OverThirteen2, 20);
     
