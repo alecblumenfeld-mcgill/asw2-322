@@ -125,7 +125,7 @@ void pushSeed(std::list<Seed> &flower, ContinuedFraction &theta) {
 int spitNextMagicBox(MagicBox &box) {
 
     //base case
-    printf("BOX:  \n i: %d  j: %d      \n k: %d  l: %d \n",box.i ,box.j,box.k,box.l);
+    //printf("BOX:  \n i: %d  j: %d      \n k: %d  l: %d \n",box.i ,box.j,box.k,box.l);
     if (box.k == 0 && box.l==0) {
         return NULL;
     }
@@ -168,7 +168,7 @@ int spitNextMagicBox(MagicBox &box) {
         box.j=box.l;
         box.k = i - (box.k*p);
         box.l = j - (box.l*p);
-         printf("RETURNING: %d \n",p);
+        //printf("RETURNING: %d \n",p);
         return p;
     }
     else{
@@ -236,7 +236,7 @@ ContinuedFraction getCFUsingMB(ContinuedFraction &f, int a, int b, int length) {
         flag = spitNextMagicBox(*box);
         toRet.fixedPart.push_back(flag);
     }
-    printf("MAGIC %d", spitNextMagicBox(*box));
+    //printf("MAGIC %d", spitNextMagicBox(*box));
     
     
     
