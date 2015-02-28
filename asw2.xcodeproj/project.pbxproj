@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		7024758D1A96400F00969E47 /* flowersExamples.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7024758A1A96400F00969E47 /* flowersExamples.cpp */; };
 		7024758E1A96400F00969E47 /* flowersStudent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7024758B1A96400F00969E47 /* flowersStudent.cpp */; };
-		7024758F1A96400F00969E47 /* flowersTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7024758C1A96400F00969E47 /* flowersTest.cpp */; };
+		703E3F661AA13680000DCD52 /* flowersTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 703E3F651AA13680000DCD52 /* flowersTest.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,11 +26,11 @@
 
 /* Begin PBXFileReference section */
 		7024757E1A963FF100969E47 /* asw2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = asw2; sourceTree = BUILT_PRODUCTS_DIR; };
-		702475881A96400F00969E47 /* desiredOutput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = desiredOutput.txt; sourceTree = "<group>"; };
 		702475891A96400F00969E47 /* flowers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flowers.h; sourceTree = "<group>"; };
 		7024758A1A96400F00969E47 /* flowersExamples.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flowersExamples.cpp; sourceTree = "<group>"; };
 		7024758B1A96400F00969E47 /* flowersStudent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flowersStudent.cpp; sourceTree = "<group>"; };
-		7024758C1A96400F00969E47 /* flowersTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flowersTest.cpp; sourceTree = "<group>"; };
+		703E3F641AA13680000DCD52 /* desiredOutput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = desiredOutput.txt; sourceTree = "<group>"; };
+		703E3F651AA13680000DCD52 /* flowersTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flowersTest.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,11 +47,11 @@
 		702475751A963FF100969E47 = {
 			isa = PBXGroup;
 			children = (
-				702475881A96400F00969E47 /* desiredOutput.txt */,
 				702475891A96400F00969E47 /* flowers.h */,
 				7024758A1A96400F00969E47 /* flowersExamples.cpp */,
+				703E3F641AA13680000DCD52 /* desiredOutput.txt */,
+				703E3F651AA13680000DCD52 /* flowersTest.cpp */,
 				7024758B1A96400F00969E47 /* flowersStudent.cpp */,
-				7024758C1A96400F00969E47 /* flowersTest.cpp */,
 				7024757F1A963FF100969E47 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,8 +120,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				703E3F661AA13680000DCD52 /* flowersTest.cpp in Sources */,
 				7024758E1A96400F00969E47 /* flowersStudent.cpp in Sources */,
-				7024758F1A96400F00969E47 /* flowersTest.cpp in Sources */,
 				7024758D1A96400F00969E47 /* flowersExamples.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,6 +236,7 @@
 				702475871A963FF100969E47 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

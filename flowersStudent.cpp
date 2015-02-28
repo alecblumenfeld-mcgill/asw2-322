@@ -1,5 +1,8 @@
 #include "flowers.h"
 #include <math.h>
+#include <stdio.h>
+#include <list>
+
 Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
     Fraction toRet; // will be returned
     std::vector<int> temp;
@@ -8,6 +11,7 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
         
   
     if (fr.fixedPart.front()==0) {
+        
         std::vector<int>::iterator it = fr.periodicPart.begin();
         while (n>1) {
             temp.push_back(*it);
@@ -20,7 +24,7 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
 
     }
           }
-    else if (fr.fixedPart.size()!=0) {
+     if (fr.fixedPart.size()!=0) {
 
         for (std::vector<int>::iterator it = fr.fixedPart.begin() ; it != fr.fixedPart.end(); ++it){
             temp.push_back(*it);
@@ -120,53 +124,68 @@ void pushSeed(std::list<Seed> &flower, ContinuedFraction &theta) {
 }
 
 int spitNextMagicBox(MagicBox &box) {
-    if((box.k == 0 && box.l ==0 ) || box.boxedFraction.fixedPart.size() == 0){
-        return -1;
-        
-    }
-    double blank;
-    double joverl;
-    double ioverk;
-    try {
-         joverl= modf((double)box.j / (double)box.l, &blank);
-         ioverk= modf((double)box.i / (double)box.k, &blank);
-    } catch (int e) {
-        
-    }
-    if(joverl != ioverk || box.k ==0  || box.l ==0 ){
-     
-        int p=box.boxedFraction.fixedPart.back();
-        box.boxedFraction.fixedPart.pop_back();
-        
-        int i =box.i;
-        box.i=box.j;
-        int k =box.k;
-        box.k=box.l;
-        box.j = i+ (box.j*p);
-        
-        box.l = k+ (box.l*p);
-        return p;
-    }
+//    printf("BOX:  K: %d        l: %d        j: %d       i: %d \n",box.k ,box.l,box.j,box.i);
+//    double blank;
+//    double joverl = -1;
+//    double ioverk = -2;
+//    double temp1,temp2;
+//    if((box.k == 0 && box.l ==0 ) || box.boxedFraction.fixedPart.size() == 0){
+//        std::cout<< "____K AND L == 0___"<<std::endl;
+//        return -1;
+//    }
+//    else if(box.k !=0  && box.l !=0 ) {
+//        temp1 =box.j / (double)box.l;
+//        temp2 =box.i / (double)box.k;
+//        joverl = (int) temp1;
+//        ioverk = (int) temp2;
+//        std::cout<<"\n joverl = "<< temp1<<  "  ioverk = "  << temp2<<std::endl;
+//        std::cout<<"\n joverl = "<< joverl<<  "  ioverk "  << ioverk<<std::endl;
+//        
+//    }
+//    else if(joverl == ioverk){
+//        std::cout<<"\n joverl == ioverk   : "<< joverl <<std::endl;
+//        int p=box.boxedFraction.fixedPart.front();
+//        box.boxedFraction.fixedPart.erase(box.boxedFraction.fixedPart.begin());
+//        
+//        int i =box.i;
+//        box.i=box.j;
+//        int k =box.k;
+//        box.k=box.l;
+//        box.j = i+ (box.j*p);
+//        box.l = k+ (box.l*p);
+//        
+//        //printf("returning:  %f",joverl);
+//        return (int)joverl;
+//    }
+//    else if(joverl != ioverk || box.k ==0  || box.l ==0 ){
+//        printf(" J/l!= i/K or K or (L == 0) \n");
+//        int p=box.boxedFraction.fixedPart.front();
+//        box.boxedFraction.fixedPart.erase(box.boxedFraction.fixedPart.begin());
+//        //set holders and swap
+//        int i =box.i;
+//        box.i=box.j;
+//        int k =box.k;
+//        box.k=box.l;
+//        //evaluate for new l and j
+//        box.j = i+ (box.j*p);
+//        box.l = k+ (box.l*p);
+//        printf("BOX2:  K: %d        l: %d        j: %d       i: %d \n",box.k ,box.l,box.j,box.i);
+//        spitNextMagicBox(box);
+//    }
+//        
+//   
+//    
+//    return -1;
+    return 2;
     
-    if(joverl != ioverk){
-        int p=box.boxedFraction.fixedPart.back();
-        box.boxedFraction.fixedPart.pop_back();
-        int i =box.i;
-        box.i=box.j;
-        int k =box.k;
-        box.k=box.l;
-        box.j = i+ (box.j*p);
-        box.l = k+ (box.l*p);
-        return p;
-    }
-    return -1;
-   
+    
+    
 }
 
 
 ContinuedFraction getCFUsingMB(ContinuedFraction &f, int a, int b, int length) {
     std::vector<int> temp;
-    int n = length;
+    int n = length +1;
     //make a new vector list for the length of n
     if (f.fixedPart[0]==0) {
         std::vector<int>::iterator it = f.periodicPart.begin();
@@ -212,9 +231,10 @@ ContinuedFraction getCFUsingMB(ContinuedFraction &f, int a, int b, int length) {
     
     ContinuedFraction toRet = *new ContinuedFraction;
     int flag =   spitNextMagicBox(*box);
-    while ( flag != -1) {
+    std::cout<<flag << ":FLAG"<<std::endl;
+    while ( flag != -1 && flag <1) {
         toRet.fixedPart.push_back(flag);
-      
+        
         flag = spitNextMagicBox(*box);
         
         
