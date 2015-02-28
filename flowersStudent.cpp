@@ -1,8 +1,5 @@
 #include "flowers.h"
 #include <math.h>
-#include <stdio.h>
-#include <list>
-
 Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
     Fraction toRet; // will be returned
     std::vector<int> temp;
@@ -11,7 +8,6 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
         
   
     if (fr.fixedPart.front()==0) {
-        
         std::vector<int>::iterator it = fr.periodicPart.begin();
         while (n>1) {
             temp.push_back(*it);
@@ -24,7 +20,7 @@ Fraction getApproximation(ContinuedFraction &fr, unsigned int n) {
 
     }
           }
-     if (fr.fixedPart.size()!=0) {
+    else if (fr.fixedPart.size()!=0) {
 
         for (std::vector<int>::iterator it = fr.fixedPart.begin() ; it != fr.fixedPart.end(); ++it){
             temp.push_back(*it);
@@ -82,7 +78,7 @@ int spitSqrt8(int index){
 
 }
 unsigned int spitEulerSquare(unsigned int index) {
-    // TODO : add code here
+    // just looking at the peridoic part of th eq and see the patterns
     if (index==0) return 7;
     if (index%5 == 2|| index%5 == 3) {
         return 1;
@@ -105,13 +101,15 @@ double getAngle(ContinuedFraction &theta, int k) {
     Fraction angleApprox = getApproximation(theta, 7);
     double angleApproxDeci= k*((double)angleApprox.numerator/(double)angleApprox.denominator);
     double blank;
+    //just get decimal part of aproxmation
     angleApproxDeci = modf(angleApproxDeci, &blank);
+    //following the formula
     return  angleApproxDeci * (2*M_PI);
 }
 
 Seed getSeed(ContinuedFraction &theta, int k) {
     Seed toRet;
-    
+    //applying formula from assigment
     double angle = getAngle(theta, k);
     
     toRet.x= sqrt(k/M_PI)*cos(angle);
@@ -120,72 +118,69 @@ Seed getSeed(ContinuedFraction &theta, int k) {
 }
 
 void pushSeed(std::list<Seed> &flower, ContinuedFraction &theta) {
+    //pretty simple
     flower.push_back(getSeed(theta, (int)flower.size()));
 }
 
 int spitNextMagicBox(MagicBox &box) {
-//    printf("BOX:  K: %d        l: %d        j: %d       i: %d \n",box.k ,box.l,box.j,box.i);
-//    double blank;
-//    double joverl = -1;
-//    double ioverk = -2;
-//    double temp1,temp2;
-//    if((box.k == 0 && box.l ==0 ) || box.boxedFraction.fixedPart.size() == 0){
-//        std::cout<< "____K AND L == 0___"<<std::endl;
-//        return -1;
-//    }
-//    else if(box.k !=0  && box.l !=0 ) {
-//        temp1 =box.j / (double)box.l;
-//        temp2 =box.i / (double)box.k;
-//        joverl = (int) temp1;
-//        ioverk = (int) temp2;
-//        std::cout<<"\n joverl = "<< temp1<<  "  ioverk = "  << temp2<<std::endl;
-//        std::cout<<"\n joverl = "<< joverl<<  "  ioverk "  << ioverk<<std::endl;
-//        
-//    }
-//    else if(joverl == ioverk){
-//        std::cout<<"\n joverl == ioverk   : "<< joverl <<std::endl;
-//        int p=box.boxedFraction.fixedPart.front();
-//        box.boxedFraction.fixedPart.erase(box.boxedFraction.fixedPart.begin());
-//        
-//        int i =box.i;
-//        box.i=box.j;
-//        int k =box.k;
-//        box.k=box.l;
-//        box.j = i+ (box.j*p);
-//        box.l = k+ (box.l*p);
-//        
-//        //printf("returning:  %f",joverl);
-//        return (int)joverl;
-//    }
-//    else if(joverl != ioverk || box.k ==0  || box.l ==0 ){
-//        printf(" J/l!= i/K or K or (L == 0) \n");
-//        int p=box.boxedFraction.fixedPart.front();
-//        box.boxedFraction.fixedPart.erase(box.boxedFraction.fixedPart.begin());
-//        //set holders and swap
-//        int i =box.i;
-//        box.i=box.j;
-//        int k =box.k;
-//        box.k=box.l;
-//        //evaluate for new l and j
-//        box.j = i+ (box.j*p);
-//        box.l = k+ (box.l*p);
-//        printf("BOX2:  K: %d        l: %d        j: %d       i: %d \n",box.k ,box.l,box.j,box.i);
-//        spitNextMagicBox(box);
-//    }
-//        
-//   
-//    
-//    return -1;
-    return 2;
-    
-    
-    
+
+    //base case
+    printf("BOX:  \n i: %d  j: %d      \n k: %d  l: %d \n",box.i ,box.j,box.k,box.l);
+    if (box.k == 0 && box.l==0) {
+        return NULL;
+    }
+    //end of x case
+    if (box.boxedFraction.fixedPart.size()==0) {
+        
+        int i=box.i;
+        int k=box.k;
+        box.k= 0;
+        box.l=0;
+        return i/k;
+    }
+    // k or l are zero
+    if (box.k == 0 || box.l ==0) {
+        notEqual:
+        //make temps and resign as per the algortihmim in the assigment
+        int p=box.boxedFraction.fixedPart.front();
+        box.boxedFraction.fixedPart.erase(box.boxedFraction.fixedPart.begin());
+        int i =box.i;
+        box.i=box.j;
+        int k =box.k;
+        box.k=box.l;
+        //evaluate for new l and j
+        box.j = i+ (box.j*p);
+        box.l = k+ (box.l*p);
+        //recurese
+        return spitNextMagicBox(box);
+    }
+    double temp1 =box.j / (double)box.l;
+    double temp2 =box.i / (double)box.k;
+    int joverl = (int) temp1;
+    int ioverk = (int) temp2;
+    //eq case
+    if (joverl == ioverk ) {
+        //make temps and resign as per the algortihmim in the assigment
+        int p = joverl;
+        int i =box.i;
+        box.i=box.k;
+        int j =box.j;
+        box.j=box.l;
+        box.k = i - (box.k*p);
+        box.l = j - (box.l*p);
+         printf("RETURNING: %d \n",p);
+        return p;
+    }
+    else{
+        // same case as l or k ==0
+        goto notEqual;
+    }
 }
 
 
 ContinuedFraction getCFUsingMB(ContinuedFraction &f, int a, int b, int length) {
     std::vector<int> temp;
-    int n = length +1;
+    int n = length;
     //make a new vector list for the length of n
     if (f.fixedPart[0]==0) {
         std::vector<int>::iterator it = f.periodicPart.begin();
@@ -223,23 +218,25 @@ ContinuedFraction getCFUsingMB(ContinuedFraction &f, int a, int b, int length) {
         }
     }
    
-    
+    //make a new magic box
     MagicBox *box = new MagicBox;
     box->i=a;
     box->j=b;
     box->boxedFraction.fixedPart = temp;
     
     ContinuedFraction toRet = *new ContinuedFraction;
-    int flag =   spitNextMagicBox(*box);
-    std::cout<<flag << ":FLAG"<<std::endl;
-    while ( flag != -1 && flag <1) {
+    //push new magic box if it is not null
+    int flag = spitNextMagicBox(*box);
+    
+    if (flag != NULL) {
         toRet.fixedPart.push_back(flag);
-        
-        flag = spitNextMagicBox(*box);
-        
-        
-
     }
+    //continue to push while not null
+    while (flag != NULL) {
+        flag = spitNextMagicBox(*box);
+        toRet.fixedPart.push_back(flag);
+    }
+    printf("MAGIC %d", spitNextMagicBox(*box));
     
     
     
